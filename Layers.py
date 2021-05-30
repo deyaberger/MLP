@@ -18,6 +18,7 @@ class Layer:
         self.input_size = input_size
         self.units = units
         self.w = None
+        self.b = self.xavier_init(1, units)
         if self.input_size != None:
             self.w = self.xavier_init(input_size, units)
         self.activation, self.activation_derivative = self.activations(activation)
@@ -32,20 +33,14 @@ class Layer:
         
     def xavier_init(self, input_size, units):
         lower, upper = -(1.0 / sqrt(input_size)), (1.0 / sqrt(input_size))
-        weights = rand(input_size + 1, units)
+        weights = rand(input_size, units)
         weights = weights * (upper - lower) + lower
         return (weights)
     
     
-    def add_bias_units(self, X):
-        bias_units = np.ones((X.shape[0], 1))
-        X = np.concatenate((bias_units, X), axis = 1)
-        return (X)
-
-    
     def forward(self, X):
-        X = self.add_bias_units(X)
-        self.z = np.matmul(X, self.w)
+        self.X = X
+        self.z = np.matmul(X, self.w) + self.b
         self.a = self.activation(self.z)
         return (self.a)
     
@@ -53,6 +48,13 @@ class Layer:
     def backwards(self, djda):
         dadz = self.activation_derivative(self.a, self.z)
         djdz = np.einsum('ik,ikj->ij', djda, dadz)
+        print(f"{djdz.shape = }, {self.X.shape = }")
+        self.djdw = np.matmul(self.X.T, djdz)
+        self.djdb = djdz
+        print(f"{self.w.shape = }, {djdz.shape = }")
+        djdx = np.matmul(self.w, djdz.T) ### TODO :: >>>???
+        return (djdx)
+        
     
     def __str__(self):
         return(f"activation = {self.activation.__name__}\n{self.input_size = }, {self.units = }\n{self.w.shape = }, {self.z.shape = }, {self.a.shape = }")

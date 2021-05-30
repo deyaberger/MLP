@@ -5,7 +5,20 @@ import sys
 
 epsilon = 0.000001
 epochs = 100
+lr = 0.01
 
+def get_loss(loss_name):
+    loss_function = None
+    if loss_name == "crossentropy":
+        loss_function, loss_function_derivative = crossentropy, crossentropy_derivative
+    return loss_function, loss_function_derivative
+
+def optimizer_function(optimizer_name):
+    optimizer_function = None
+    if optimizer_name == "gradient_descent":
+        optimizer_function = gradient_descent
+    return (optimizer_function)
+        
 def crossentropy(a, y):
     log_a = np.log(a)
     temp_loss = np.sum((log_a * y), axis = 1, keepdims = True)
@@ -16,6 +29,9 @@ def crossentropy_derivative(a, y):
     d_cross = -1.0 * (y / (a + epsilon))
     d_cross = d_cross / y.shape[0]
     return (d_cross)
+
+def gradient_descent(gradient):
+    ret = gradient - (lr * gradient)
     
 
 class Model:
@@ -33,24 +49,28 @@ class Model:
             X = l.forward(X)
         return (X)
     
-    def get_loss(self, loss_name):
-        loss_function = None
-        if loss_name == "crossentropy":
-            loss_function, loss_function_derivative = crossentropy, crossentropy_derivative
-        return loss_function, loss_function_derivative
-
-    def optimizer_function(self, optimizer_name):
-        raise NotImplementedError
     
-    def compile(self, loss, optimizer = None):
+    def compile(self, loss, optimizer):
         self.loss_function, self.loss_function_derivative = get_loss(loss)
-        # self.optimizer = optimizer_function(optimizer)
+        self.optimizer = optimizer_function(optimizer)
+        
+    def backpropagation(self, djda):
+        for layer in reversed(self.layers):
+            djda = layer.backwards(djda)
+    
+    def improve(self):
+        for layer in self.layers:
+            layer.w = self.optimizer(layer.djdw) 
+            layer.b = self.optimizer(layer.djdb)
     
     def fit(self, X, y):
-        for e in epochs:
+        for e in range(epochs):
             a = self.feed_forward(X)
             print(round(self.loss_function(a, y), 2))
             djda = self.loss_function_derivative(a, y)
+            self.backpropagation(djda)
+            self.improve()
+                
         
             
 
@@ -66,5 +86,5 @@ if __name__ == "__main__":
         Layer(units = 4, activation = "sigmoid", input_size = X.shape[1]),
         Layer(units = 1, activation = "sigmoid")
     ])
-    model.compile(loss = "crossentropy")
+    model.compile(loss = "crossentropy", optimizer = "gradient_descent")
     model.fit(X, y)
