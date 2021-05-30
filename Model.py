@@ -4,7 +4,7 @@ import numpy as np
 import sys
 
 epsilon = 0.000001
-epochs = 100
+epochs = 1000
 lr = 0.01
 
 def get_loss(loss_name):
@@ -28,10 +28,13 @@ def crossentropy(a, y):
 def crossentropy_derivative(a, y):
     d_cross = -1.0 * (y / (a + epsilon))
     d_cross = d_cross / y.shape[0]
+    print(f"{d_cross.shape =}")
     return (d_cross)
 
-def gradient_descent(gradient):
-    ret = gradient - (lr * gradient)
+def gradient_descent(layer):
+    layer.w = layer.w - (lr * layer.djdw)
+    layer.b = layer.b - (lr * layer.djdb)
+
     
 
 class Model:
@@ -50,7 +53,7 @@ class Model:
         return (X)
     
     
-    def compile(self, loss, optimizer):
+    def compile(self, loss, optimizer): 
         self.loss_function, self.loss_function_derivative = get_loss(loss)
         self.optimizer = optimizer_function(optimizer)
         
@@ -60,14 +63,14 @@ class Model:
     
     def improve(self):
         for layer in self.layers:
-            layer.w = self.optimizer(layer.djdw) 
-            layer.b = self.optimizer(layer.djdb)
+            self.optimizer(layer) 
     
     def fit(self, X, y):
         for e in range(epochs):
             a = self.feed_forward(X)
-            print(round(self.loss_function(a, y), 2))
+            print("LOSS:", round(self.loss_function(a, y), 2))
             djda = self.loss_function_derivative(a, y)
+            print("djda.shape: ", djda.shape)
             self.backpropagation(djda)
             self.improve()
                 
@@ -83,8 +86,16 @@ if __name__ == "__main__":
     
     print(f"AT FIRST: {X.shape = }")
     model = Model([
-        Layer(units = 4, activation = "sigmoid", input_size = X.shape[1]),
-        Layer(units = 1, activation = "sigmoid")
+        Layer(units = 4, activation = "sigmoid", input_size = X.shape[1])#,
+        # Layer(units = 4, activation = "sigmoid")
     ])
     model.compile(loss = "crossentropy", optimizer = "gradient_descent")
     model.fit(X, y)
+    yhat = model.layers[-1].a
+    yhatmax = (yhat == yhat.max(axis=1, keepdims = True)).astype(int)
+    err = 0
+    for yhat, y in zip(yhatmax, y):
+        if (np.argmax(yhat) != np.argmax(y)):
+            err += 1
+    print(1 - err / 1120)
+        

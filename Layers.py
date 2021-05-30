@@ -47,12 +47,14 @@ class Layer:
     
     def backwards(self, djda):
         dadz = self.activation_derivative(self.a, self.z)
+        print(f"{djda.shape = }\n")
         djdz = np.einsum('ik,ikj->ij', djda, dadz)
         print(f"{djdz.shape = }, {self.X.shape = }")
         self.djdw = np.matmul(self.X.T, djdz)
         self.djdb = djdz
         print(f"{self.w.shape = }, {djdz.shape = }")
-        djdx = np.matmul(self.w, djdz.T) ### TODO :: >>>???
+        djdx = np.matmul(djdz, self.w.T) ### TODO :: >>>???
+        print("OUT\n\n")
         return (djdx)
         
     
