@@ -46,9 +46,12 @@ class Layer:
         self.input_size = input_size
         self.units = units
         self.w = None
+        self.vw = None
         self.b = self.xavier_init(1, units)
+        self.vb = np.zeros((1, units))
         if self.input_size != None:
             self.w = self.xavier_init(input_size, units)
+            self.vw = np.zeros((input_size, units))
         self.activation, self.activation_derivative = self.activations(activation)
 
     
