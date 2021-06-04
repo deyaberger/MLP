@@ -2,6 +2,7 @@ import pickle
 from Layers import Layer
 import numpy as np
 import sys
+import matplotlib.pyplot as plt
 
 epsilon = 0.000001
 epochs = 1000
@@ -60,7 +61,7 @@ class ModelEvaluation:
 				self.false_positive[predicted_house] += 1
 				self.false_negative[real_house] += 1
 		self.calculate_kpi()
-		# self.save_evolution()
+		self.save_evolution()
 
 	def my_divide(self, a, b):
 		result = np.divide(a, b, out=np.zeros_like(a), where=b!=0)
@@ -166,16 +167,17 @@ if __name__ == "__main__":
 		# Layer(units = 4, activation = "sigmoid")
 	])
 	model.compile(loss = "crossentropy", optimizer = "gradient_descent")
+	# model.compile(loss = "crossentropy", optimizer = "momentum")
 	score = ModelEvaluation()
 	model.fit(X, y, score)
-	yhat = model.layers[-1].a
-	yhatmax = (yhat == yhat.max(axis=1, keepdims = True)).astype(int)
-	Hmax = (H == H.max(axis=1, keepdims = True)).astype(int)
-	ymax = (y == y.max(axis=1, keepdims = True)).astype(int)
-	err = 0
-	for yhat, y in zip(yhatmax, Hmax):
-		if (np.argmax(yhat) != np.argmax(y)):
-			err += 1
-	success = round(((1 - (err / yhatmax.shape[0])) * 100), 2)
-	print(f"success =  {success}%")
+	# yhat = model.layers[-1].a
+	# yhatmax = (yhat == yhat.max(axis=1, keepdims = True)).astype(int)
+	# Hmax = (H == H.max(axis=1, keepdims = True)).astype(int)
+	# ymax = (y == y.max(axis=1, keepdims = True)).astype(int)
+	# err = 0
+	# for yhat, y in zip(yhatmax, Hmax):
+	# 	if (np.argmax(yhat) != np.argmax(y)):
+	# 		err += 1
+	# success = round(((1 - (err / yhatmax.shape[0])) * 100), 2)
+	# print(f"success =  {success}%")
 		
