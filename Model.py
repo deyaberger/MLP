@@ -6,6 +6,7 @@ import sys
 epsilon = 0.000001
 epochs = 1000
 lr = 0.01
+momentum = 0.9
 
 def get_loss(loss_name):
     loss_function = None
@@ -16,6 +17,8 @@ def get_loss(loss_name):
 def optimizer_function(optimizer_name):
     optimizer_function = None
     if optimizer_name == "gradient_descent":
+        optimizer_function = gradient_descent
+    if optimizer_name == "nag_gradient_descent":
         optimizer_function = gradient_descent
     return (optimizer_function)
         
@@ -28,12 +31,15 @@ def crossentropy(a, y):
 def crossentropy_derivative(a, y):
     d_cross = -1.0 * (y / (a + epsilon))
     d_cross = d_cross / y.shape[0]
-    print(f"{d_cross.shape =}")
+    # print(f"{d_cross.shape =}")
     return (d_cross)
 
 def gradient_descent(layer):
     layer.w = layer.w - (lr * layer.djdw)
     layer.b = layer.b - (lr * layer.djdb)
+
+def nag_gradient_descent(layer, batch_size = 100):
+    
 
     
 
@@ -68,9 +74,9 @@ class Model:
     def fit(self, X, y):
         for e in range(epochs):
             a = self.feed_forward(X)
-            print("LOSS:", round(self.loss_function(a, y), 2))
+            if e == 0 or e == epochs - 1:
+                print("LOSS:", round(self.loss_function(a, y), 2))
             djda = self.loss_function_derivative(a, y)
-            print("djda.shape: ", djda.shape)
             self.backpropagation(djda)
             self.improve()
                 
@@ -84,18 +90,20 @@ if __name__ == "__main__":
     H = info["y_predicted"]
     y = info["y"]
     
-    print(f"AT FIRST: {X.shape = }")
     model = Model([
-        Layer(units = 4, activation = "sigmoid", input_size = X.shape[1])#,
+        Layer(units = 4, activation = "softmax", input_size = X.shape[1])#,
         # Layer(units = 4, activation = "sigmoid")
     ])
     model.compile(loss = "crossentropy", optimizer = "gradient_descent")
     model.fit(X, y)
     yhat = model.layers[-1].a
     yhatmax = (yhat == yhat.max(axis=1, keepdims = True)).astype(int)
+    Hmax = (H == H.max(axis=1, keepdims = True)).astype(int)
+    ymax = (y == y.max(axis=1, keepdims = True)).astype(int)
     err = 0
-    for yhat, y in zip(yhatmax, y):
+    for yhat, y in zip(yhatmax, Hmax):
         if (np.argmax(yhat) != np.argmax(y)):
             err += 1
-    print(1 - err / 1120)
+    success = round(((1 - (err / yhatmax.shape[0])) * 100), 2)
+    print(f"success =  {success}%")
         
