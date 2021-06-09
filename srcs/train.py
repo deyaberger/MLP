@@ -15,8 +15,8 @@ if __name__ == "__main__":
     ])
     model.compile(loss = conf.loss, optimizer = conf.optimizer)
     score = ModelEvaluation()
-    yhat = model.fit(X, y)
-    score.evaluation(y, yhat)
+    yhat = model.fit(X, y, score)
+    # score.evaluation(y, yhat)
     # yhat = model.layers[-1].a
     # yhatmax = (yhat == yhat.max(axis=1, keepdims = True)).astype(int)
     # Hmax = (H == H.max(axis=1, keepdims = True)).astype(int)

@@ -35,13 +35,23 @@ class ModelEvaluation:
     
     
     def get_all_metrics(self):
-        self.global_sensitivity, self.global_specificity, self.global_precision, self.gloabl_f1 = self.calculate_metrics(self.eval[:, 0], self.eval[:, 1], self.eval[:, 2], self.eval[:, 3])
+        self.global_sensitivity, self.global_specificity, self.global_precision, self.global_f1 = self.calculate_metrics(self.eval[:, 0], self.eval[:, 1], self.eval[:, 2], self.eval[:, 3])
 
     
     def get_mean_metrics(self):
         self.mean_sensitivity = np.mean(self.global_sensitivity)
         self.mean_specificity = np.mean(self.global_specificity)
         self.mean_precision = np.mean(self.global_precision)
-        self.mean_f1 = np.mean(self.gloabl_f1)
+        self.mean_f1 = np.mean(self.global_f1)
     
+    
+    def keep_track(self, loss, val_loss):
+        self.history.append([loss, val_loss, self.mean_sensitivity, self.mean_specificity, self.mean_precision, self.mean_f1])
+    
+    
+    def __str__(self):
+        all = f"global_sensitivity = {self.global_sensitivity}\nglobal_specificity = {self.global_specificity}\nglobal_precision = {self.global_precision}\nglobal_f1 = {self.global_f1}"
+        mean = f"mean_sensitivity = {round(self.mean_sensitivity, 4)}, mean_specificity = {round(self.mean_specificity, 4)}, mean_precision = {round(self.mean_precision, 4)}, mean_f1 = {round(self.mean_f1, 4)}"
+        all_mean = f"MEAN:\n{mean}\n\nALL:\n{all}"
+        return(mean)
     

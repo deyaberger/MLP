@@ -29,18 +29,17 @@ class Model:
         for layer in self.layers:
             self.optimizer(layer) 
     
-    def fit(self, X, y):
+    def fit(self, X, y, score):
         for e in range(conf.epochs):
             a = self.feed_forward(X)
             loss = self.loss_function(a, y)
-            val_loss = self.loss_function(a, y) ### TODO: change into test set
+            val_loss = 0 # self.loss_function(a, y) ### TODO: change into test set
             djda = self.loss_function_derivative(a, y)
             self.backpropagation(djda)
             self.improve()
-            print(f"epoch {e}/{conf.epochs} - loss: {round(loss, 4)} - val_loss: {round(val_loss, 4)}")
+            score.evaluation(y, a)
+            score.keep_track(loss, val_loss)
+            print(f"\nepoch {e + 1}/{conf.epochs} - loss: {round(loss, 4)} - val_loss: {round(val_loss, 4)}")
+            print(score)
         return (a)
-            # if e == 0 or e == conf.epochs - 1:
-            # 	score.evaluate(e, a, y)
-            # 	print("LOSS:", round(self.loss_function(a, y), 2))
-            # 	print(f"*average F1_score = {round(np.mean(score.F1_score), 3)}\n*average accuracy = {round(np.mean(score.accuracy), 3)}\n")
                 
