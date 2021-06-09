@@ -2,58 +2,46 @@ import numpy as np
 
 class ModelEvaluation:
     def __init__(self):
-        ''' Validation metrics:
-        True positive: correct prediction for a student to be part of a certain house in Hogwart
-        True negative: correct prediction for a student to NOT be part of a certain house in Hogwart
-        False positive: incorrect prediction for a student to be part of a certain house in Hogwart
-        False negative: incorrect prediction for a student to NOT be part of a certain house in Hogwart
-        '''
-        self.precision_total, self.sensitivity_total, self.accuracy_total, self.F1_score_total = [], [], [], []
-        self.init_metrics()
+        self.history = []
+        
+    def evaluation(self, y, yhat):
+        self.eval = self.evaluate_classifier(y, yhat)
+        self.get_all_metrics()
+        self.get_mean_metrics()
     
-    def init_metrics(self):
-        self.true_positive = np.zeros((4, 1))
-        self.true_negative = np.zeros((4, 1))
-        self.false_negative = np.zeros((4, 1))
-        self.false_positive = np.zeros((4, 1))
-
-    def calculate_kpi(self):
-        ''' Commonly use KPIs:
-        Precision: expresses the proportion of the data points our model says was relevant actually were relevant.
-        Sensitivity: (also called redcall) expresses the ability to find all relevant instances in a dataset.
-        Accuracy: proportion of correct predictions over total predictions.
-        F1 Score: the harmonic mean of the model s precision and recall.
-        '''
-        self.precision = self.my_divide(self.true_positive, (self.true_positive + self.false_positive))
-        self.sensitivity = self.my_divide(self.true_positive, (self.true_positive + self.false_negative))
-        self.accuracy = self.my_divide((self.true_positive + self.true_negative), (self.true_positive + self.true_negative + self.false_positive + self.false_negative))
-        self.F1_score = (2 * (self.my_divide((self.precision * self.sensitivity), (self.precision + self.sensitivity))))
+        
+    def evaluate_classifier(self, y, yhat):
+        yhatmax = (yhat == yhat.max(axis=1, keepdims = True)).astype(int)
+        eval = []
+        for col in range(y.shape[1]):
+            yy = y[:, col]
+            yyhatmax = yhatmax[:, col]
+            e = 2 * yy + yyhatmax
+            tp = (e == 3).astype(int).sum()
+            tn = (e == 0).astype(int).sum()
+            fn = (e == 2).astype(int).sum()
+            fp = (e == 1).astype(int).sum()
+            eval.append([tp, fp, tn, fn])
+        eval = np.array(eval)
+        return (eval)
     
-    def save_evolution(self):
-        ''' Saving all values of our kpis during each call to the evaluate function, to display them in the graphs '''
-        self.precision_total.append(round(np.mean(self.precision), 3))
-        self.sensitivity_total.append(round(np.mean(self.sensitivity), 3))
-        self.accuracy_total.append(round(np.mean(self.accuracy), 3))
-        self.F1_score_total.append(round(np.mean(self.F1_score), 3))
+    
+    def calculate_metrics(self, tp, fp, tn, fn):
+        sensitivity = tp / (tp + fn)
+        specificity = tn / (tn + fp)
+        precision = tp / (tp + fp)
+        f1 = 2.0 * (sensitivity * precision) / (sensitivity + precision)
+        return (sensitivity, specificity, precision, f1)
+    
+    
+    def get_all_metrics(self):
+        self.global_sensitivity, self.global_specificity, self.global_precision, self.gloabl_f1 = self.calculate_metrics(self.eval[:, 0], self.eval[:, 1], self.eval[:, 2], self.eval[:, 3])
 
-    def evaluate(self, epochs, yhat, y):
-        '''
-        Calculating different type of KPIs to evaluate the performance of our model and its evolution
-        '''
-        self.init_metrics()
-        for i in range(len(yhat)):
-            predicted_house, real_house = np.argmax(yhat[i]), np.argmax(y[i])
-            if predicted_house == real_house:
-                self.true_positive[predicted_house] += 1
-                for index, nb in enumerate(yhat[i]):
-                    if index != i:
-                        self.true_negative[index] += 1
-            else:
-                self.false_positive[predicted_house] += 1
-                self.false_negative[real_house] += 1
-        self.calculate_kpi()
-        self.save_evolution()
-
-    def my_divide(self, a, b):
-        result = np.divide(a, b, out=np.zeros_like(a), where=b!=0)
-        return(result)
+    
+    def get_mean_metrics(self):
+        self.mean_sensitivity = np.mean(self.global_sensitivity)
+        self.mean_specificity = np.mean(self.global_specificity)
+        self.mean_precision = np.mean(self.global_precision)
+        self.mean_f1 = np.mean(self.gloabl_f1)
+    
+    
