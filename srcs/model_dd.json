@@ -1,0 +1,1 @@
+{"optimizer": "gradient_descent", "loss": "crossentropy", "layers": [{"activation": "softmax", "input_size": 11, "output_size": 9}, {"activation": "softmax", "input_size": 9, "output_size": 8}, {"activation": "softmax", "input_size": 8, "output_size": 7}, {"activation": "softmax", "input_size": 7, "output_size": 4}]}

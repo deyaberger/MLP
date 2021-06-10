@@ -1,4 +1,4 @@
-from utils import optimizer_function, get_loss, conf, save_json
+from utils import xavier_init, optimizer_function, get_loss, conf, save_json
 import numpy as np
 
 
@@ -9,7 +9,7 @@ class Model:
         for l in self.layers:
             if l.input_size == None:
                 l.input_size = last_layer.units
-                l.w = l.xavier_init(l.input_size, l.units)
+                l.w = xavier_init(l.input_size, l.units)
                 last_layer = l
             
     def feed_forward(self, X):
@@ -21,8 +21,6 @@ class Model:
     def compile(self, loss, optimizer):
         self.loss_function, self.loss_function_derivative = get_loss(loss)
         self.optimizer = optimizer_function(optimizer)
-        print(self.optimizer.__name__)
-        print(self.loss_function.__name__)
         
         
     def backpropagation(self, djda):
