@@ -1,4 +1,6 @@
 import numpy as np
+np.seterr(divide='ignore', invalid='ignore') #TODO : maybe change it at the end
+from utils import save_in_file
 
 class ModelEvaluation:
     def __init__(self):
@@ -47,6 +49,10 @@ class ModelEvaluation:
     
     def keep_track(self, loss, val_loss):
         self.history.append([loss, val_loss, self.mean_sensitivity, self.mean_specificity, self.mean_precision, self.mean_f1])
+    
+    
+    def save(self, name):
+        save_in_file(name, self.history)
     
     
     def __str__(self):

@@ -1,5 +1,6 @@
 from utils import optimizer_function, get_loss, conf
-import numpy as np
+from utils import save_in_file
+
 
 class Model:
     def __init__(self, layers_list):
@@ -17,9 +18,12 @@ class Model:
         return (X)
     
     
-    def compile(self, loss, optimizer): 
+    def compile(self, loss, optimizer):
         self.loss_function, self.loss_function_derivative = get_loss(loss)
         self.optimizer = optimizer_function(optimizer)
+        print(self.optimizer.__name__)
+        print(self.loss_function.__name__)
+        
         
     def backpropagation(self, djda):
         for layer in reversed(self.layers):
@@ -39,7 +43,12 @@ class Model:
             self.improve()
             score.evaluation(y, a)
             score.keep_track(loss, val_loss)
-            print(f"\nepoch {e + 1}/{conf.epochs} - loss: {round(loss, 4)} - val_loss: {round(val_loss, 4)}")
-            print(score)
+            # print(f"\nepoch {e + 1}/{conf.epochs} - loss: {round(loss, 4)} - val_loss: {round(val_loss, 4)}")
+            # print(score)
         return (a)
+
+
+    def save(self, name):
+        infos = {"loss" : self.optimizer.__name__, "optimizer" : self.loss_function.__name__, "layers" : self.layers}
+        save_in_file(name, infos)
                 
