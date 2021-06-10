@@ -1,5 +1,5 @@
-from utils import optimizer_function, get_loss, conf
-from utils import save_in_file
+from utils import optimizer_function, get_loss, conf, save_json
+import numpy as np
 
 
 class Model:
@@ -48,7 +48,20 @@ class Model:
         return (a)
 
 
-    def save(self, name):
-        infos = {"loss" : self.optimizer.__name__, "optimizer" : self.loss_function.__name__, "layers" : self.layers}
-        save_in_file(name, infos)
+    def save_architecture(self, name):
+        infos = {"optimizer" : self.optimizer.__name__, "loss" : self.loss_function.__name__, "layers" : []}
+        for l in self.layers:
+            layer = {"activation" : l.activation.__name__, "input_size" : l.input_size, "output_size": l.units}
+            infos["layers"].append(layer)
+        save_json(f"{name}.json", infos)
+    
+    
+    def save_weights(self, name):
+        for i, l in enumerate(self.layers):
+            np.savetxt(f"{name}_{i}.csv", l.w, delimiter=",", fmt="%s")
+    
+        
+        
+    
+        # np.savetxt(name, self.optimizer, delimiter=",", fmt="%s")
                 

@@ -1,7 +1,7 @@
 import pickle
 from utils import conf
 from modules import Model, Layer, ModelEvaluation
-from datetime import datetime
+# from datetime import datetime
 
 
 if __name__ == "__main__":
@@ -17,8 +17,11 @@ if __name__ == "__main__":
     model.compile(loss = conf.loss, optimizer = conf.optimizer)
     score = ModelEvaluation()
     yhat = model.fit(X, y, score)
-    hour = datetime.today().strftime('%H:%M')
-    score.save(f"score_{hour}.pkl")
-    model.save(f"model_{hour}.pkl")
+    # hour = datetime.today().strftime('%H:%M')
+    # score.save(f"score_{hour}.pkl")
+    model.save_architecture(f"model")
+    model.save_weights(f"weights")
+    
+    # model.save_weights(f"weights_{hour}.pkl")
 
         

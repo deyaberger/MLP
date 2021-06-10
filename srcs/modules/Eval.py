@@ -1,6 +1,5 @@
 import numpy as np
 np.seterr(divide='ignore', invalid='ignore') #TODO : maybe change it at the end
-from utils import save_in_file
 
 class ModelEvaluation:
     def __init__(self):
@@ -52,7 +51,8 @@ class ModelEvaluation:
     
     
     def save(self, name):
-        save_in_file(name, self.history)
+        # save_in_file(name, self.history)
+        pass
     
     
     def __str__(self):
