@@ -6,7 +6,7 @@ class Layer:
         self.input_size = input_size
         self.units = units
         self.w = None
-        self.vw = None
+        self.vw = 0
         self.b = xavier_init(1, units)
         self.vb = np.zeros((1, units))
         if self.input_size != None:

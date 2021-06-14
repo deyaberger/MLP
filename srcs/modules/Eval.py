@@ -51,8 +51,7 @@ class ModelEvaluation:
     
     
     def save(self, name):
-        # save_in_file(name, self.history)
-        pass
+        np.savetxt(f"{name}.csv", self.history, delimiter=",", fmt="%s")
     
     
     def __str__(self):

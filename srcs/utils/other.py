@@ -2,7 +2,6 @@ import numpy as np
 from numpy.random import rand
 from math import sqrt
 import json
-import matplotlib.pyplot as plt
 
 
 def xavier_init(input_size, units):
@@ -35,16 +34,12 @@ def from_json_to_layers(infos, Layer):
     return (layers_list)
 
 
-def load_weights_from_csv(csv_prefix, model):
+def load_weights_from_csv(csv_prefix, model): ### to be changed for path
     for i, layer in enumerate(model.layers):
         weights = np.genfromtxt(f"{csv_prefix}_{i}.csv", delimiter = ",")
         layer.w = weights
-        
 
-def show_graph(title, x, y, fig, x_label, y_label):
-    plt.figure(fig)
-    plt.title(title)
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
-    plt.plot(x, y)
-    plt.show()
+def load_eval_from_csv(file, col):
+    eval = np.genfromtxt(file, delimiter = ",")
+    return (eval[:, col])
+        
