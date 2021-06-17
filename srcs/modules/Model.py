@@ -34,16 +34,16 @@ class Model:
     def fit(self, X, y, score):
         for e in range(conf.epochs):
             a = self.feed_forward(X)
-            val_a = self.feed_forward(score.X)
             loss = self.loss_function(a, y)
-            val_loss = self.loss_function(val_a, score.y) ### TODO: change into test set
             djda = self.loss_function_derivative(a, y)
             self.backpropagation(djda)
             self.improve()
+            val_a = self.feed_forward(score.X)
+            val_loss = self.loss_function(val_a, score.y) ### TODO: change into test set
             score.evaluation(val_a)
             score.keep_track(loss, val_loss)
-            # print(f"\nepoch {e + 1}/{conf.epochs} - loss: {round(loss, 4)} - val_loss: {round(val_loss, 4)}")
-            # print(score)
+            print(f"\nepoch {e + 1}/{conf.epochs} - loss: {round(loss, 4)} - val_loss: {round(val_loss, 4)}")
+            print(score)
         return (a)
 
 

@@ -7,8 +7,8 @@ class Layer:
         self.units = units
         self.w = None
         self.vw = 0
-        self.b = xavier_init(1, units)
-        self.vb = np.zeros((1, units))
+        # self.b = xavier_init(1, units)
+        # self.vb = np.zeros((1, units))
         if self.input_size != None:
             self.w = xavier_init(input_size, units)
             self.vw = np.zeros((input_size, units))
@@ -17,7 +17,7 @@ class Layer:
     
     def forward(self, X):
         self.X = X
-        self.z = np.matmul(X, self.w) + self.b
+        self.z = np.matmul(X, self.w)# + self.b
         self.a = self.activation(self.z)
         return (self.a)
     
@@ -26,7 +26,7 @@ class Layer:
         dadz = self.activation_derivative(self.a, self.z)
         djdz = np.einsum('ik,ikj->ij', djda, dadz)
         self.djdw = np.matmul(self.X.T, djdz)
-        self.djdb = djdz
+        # self.djdb = djdz
         djdx = np.matmul(djdz, self.w.T)
         return (djdx)
         

@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 if __name__ == "__main__":
     data = Dataset(conf.datafile)
     data.feature_scale_normalise()
+    data.add_bias_units()
     data.split_data()
     model = Model([
         Layer(units = 6, activation = "sigmoid", input_size = data.X.shape[1]),

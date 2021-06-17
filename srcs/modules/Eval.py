@@ -8,7 +8,7 @@ class ModelEvaluation:
         self.y = y
         
     def evaluation(self, yhat):
-        self.eval = self.evaluate_classifier(self.y, yhat)
+        self.eval = self.evaluate_classifier(yhat)
         self.get_all_metrics()
         self.get_mean_metrics()
     

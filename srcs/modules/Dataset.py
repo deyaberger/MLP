@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from utils import conf
@@ -31,6 +32,12 @@ class Dataset:
 		self.scaler = StandardScaler()
 		self.scaler.fit(self.X)
 		self.X = self.scaler.transform(self.X)
+
+
+	def add_bias_units(self):
+		bias_units = np.ones((self.X.shape[0], 1))
+		self.X = np.concatenate((bias_units, self.X), axis = 1)
+
   
 	def split_data(self):
 		self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y, train_size=conf.train_size, random_state=42)
