@@ -2,20 +2,22 @@ import numpy as np
 np.seterr(divide='ignore', invalid='ignore') #TODO : maybe change it at the end
 
 class ModelEvaluation:
-    def __init__(self):
+    def __init__(self, X, y):
         self.history = []
+        self.X = X
+        self.y = y
         
-    def evaluation(self, y, yhat):
-        self.eval = self.evaluate_classifier(y, yhat)
+    def evaluation(self, yhat):
+        self.eval = self.evaluate_classifier(self.y, yhat)
         self.get_all_metrics()
         self.get_mean_metrics()
     
         
-    def evaluate_classifier(self, y, yhat):
+    def evaluate_classifier(self, yhat):
         yhatmax = (yhat == yhat.max(axis=1, keepdims = True)).astype(int)
         eval = []
-        for col in range(y.shape[1]):
-            yy = y[:, col]
+        for col in range(self.y.shape[1]):
+            yy = self.y[:, col]
             yyhatmax = yhatmax[:, col]
             e = 2 * yy + yyhatmax
             tp = (e == 3).astype(int).sum()
