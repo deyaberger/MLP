@@ -11,8 +11,8 @@ if __name__ == "__main__":
     print(data)
     model = Model([
         Layer(units = 6, activation = "sigmoid", input_size = data.X.shape[1]),
-        # Layer(units = 3, activation = "sigmoid"),
-        # Layer(units = 5, activation = "sigmoid"),
+        Layer(units = 3, activation = "sigmoid"),
+        Layer(units = 5, activation = "sigmoid"),
         Layer(units = data.y.shape[1], activation = "softmax"),
         
     ])
@@ -23,11 +23,7 @@ if __name__ == "__main__":
     model.save_weights(conf.weights_path)
     score.save(conf.eval_path)
     if conf.verbose == True:
-        print(f'loss = {score.history[0][0]}')
-        print(f'mean f1 = {score.history[0][-1]}')
-        print("*********\n")
-        print(f'loss = {score.history[-1][0]}')
-        print(f'mean f1 = {score.history[-1][-1]}')
+        score.print_summary()
     score.history = np.array(score.history)
     if conf.graph == True:
         fig = plt.figure(1)

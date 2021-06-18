@@ -55,6 +55,20 @@ class ModelEvaluation:
     def save(self, name):
         np.savetxt(f"{name}.csv", self.history, delimiter=",", fmt="%s")
     
+
+    def print_summary(self):
+        if len(self.history) < 2:
+            return (False)
+        start_loss = f"loss: {round(self.history[0][0], 4)} - val_loss: {round(self.history[0][1], 4)}"
+        end_loss = f"loss: {round(self.history[-1][0], 4)} - val_loss: {round(self.history[-1][1], 4)}"
+        start_mean = f"mean_sensitivity = {round(self.history[0][2], 4)}, mean_specificity = {round(self.history[0][3], 4)}, mean_precision = {round(self.history[0][4], 4)}, mean_f1 = {round(self.history[0][5], 4)}"
+        end_mean = f"mean_sensitivity = {round(self.history[-1][2], 4)}, mean_specificity = {round(self.history[-1][3], 4)}, mean_precision = {round(self.history[-1][4], 4)}, mean_f1 = {round(self.history[-1][5], 4)}"
+        print("\n\t\t\tSUMMARY:\n")
+        print("**\tBefore Training:\t**\n")
+        print(f"{start_loss}\n{start_mean}\n\n")
+        print("\n**\tAfter Training:\t**\n")
+        print(f"{end_loss}\n{end_mean}\n")
+
     
     def __str__(self):
         all = f"global_sensitivity = {self.global_sensitivity}\nglobal_specificity = {self.global_specificity}\nglobal_precision = {self.global_precision}\nglobal_f1 = {self.global_f1}"

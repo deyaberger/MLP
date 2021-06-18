@@ -54,7 +54,8 @@ class Model:
             score.evaluation(val_a)
             score.keep_track(loss, val_loss)
             if self.overfitting(score.history):
-                print(f"Stoping training loop at epoch {e} to avoid Overfitting")
+                print(f"Stoping training loop at epoch {e} to avoid Overfitting (Validation loss has started to increase)")
+                break
             print(f"\nepoch {e + 1}/{conf.epochs} - loss: {round(loss, 4)} - val_loss: {round(val_loss, 4)}")
             print(score)
         return (a)
@@ -69,11 +70,10 @@ class Model:
     
     
     def save_weights(self, name):
+        weights = []
         for i, l in enumerate(self.layers):
-            np.savetxt(f"{name}_{i}.csv", l.w, delimiter=",", fmt="%s")
+            weights.append(l.w)
+        weights = np.array(weights, dtype=object)
+        np.savetxt(f"{name}.csv", weights, delimiter=",", fmt="%s")
     
         
-        
-    
-        # np.savetxt(name, self.optimizer, delimiter=",", fmt="%s")
-                
