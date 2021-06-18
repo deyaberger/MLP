@@ -2,7 +2,7 @@ class Config:
     def __init__(self):
         self.datafile = "../datasets/data.csv"
         self.epsilon = 0.000001
-        self.epochs = 1000
+        self.epochs = 2000
         self.lr = 0.1
         self.mm = 0.9
         self.loss = 'crossentropy'

@@ -1,5 +1,6 @@
 from utils import xavier_init, optimizer_function, get_loss, conf, save_json
 import numpy as np
+import time
 
 
 class Model:
@@ -34,9 +35,11 @@ class Model:
             self.optimizer(layer)
     
     def overfitting(self, history):
-        if len(history < 4):
+        if len(history) < 2:
             return (False)
-       
+        if history[-1][1] > history[-2][1]:
+            return (True)
+        return (False)
 
     def fit(self, X, y, score):
         past = []
@@ -51,7 +54,7 @@ class Model:
             score.evaluation(val_a)
             score.keep_track(loss, val_loss)
             if self.overfitting(score.history):
-                break
+                print(f"Stoping training loop at epoch {e} to avoid Overfitting")
             print(f"\nepoch {e + 1}/{conf.epochs} - loss: {round(loss, 4)} - val_loss: {round(val_loss, 4)}")
             print(score)
         return (a)
