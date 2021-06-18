@@ -7,12 +7,12 @@ import matplotlib.pyplot as plt
 if __name__ == "__main__":
     data = Dataset(conf.datafile)
     data.feature_scale_normalise()
-    data.add_bias_units()
     data.split_data()
+    print(data)
     model = Model([
         Layer(units = 6, activation = "sigmoid", input_size = data.X.shape[1]),
-        Layer(units = 3, activation = "sigmoid"),
-        Layer(units = 5, activation = "sigmoid"),
+        # Layer(units = 3, activation = "sigmoid"),
+        # Layer(units = 5, activation = "sigmoid"),
         Layer(units = data.y.shape[1], activation = "softmax"),
         
     ])

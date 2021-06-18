@@ -1,5 +1,5 @@
 import numpy as np
-from utils import xavier_init, get_activation
+from utils import xavier_init, get_activation, add_bias_units
 
 class Layer:
     def __init__(self, units, activation, input_size = None):
@@ -10,14 +10,14 @@ class Layer:
         # self.b = xavier_init(1, units)
         # self.vb = np.zeros((1, units))
         if self.input_size != None:
-            self.w = xavier_init(input_size, units)
-            self.vw = np.zeros((input_size, units))
+            self.w = xavier_init(input_size + 1, units)
+            self.vw = np.zeros((input_size + 1, units))
         self.activation, self.activation_derivative = get_activation(activation)
 
     
     def forward(self, X):
-        self.X = X
-        self.z = np.matmul(X, self.w)# + self.b
+        self.X = add_bias_units(X)
+        self.z = np.matmul(self.X, self.w)# + self.b
         self.a = self.activation(self.z)
         return (self.a)
     
@@ -27,7 +27,8 @@ class Layer:
         djdz = np.einsum('ik,ikj->ij', djda, dadz)
         self.djdw = np.matmul(self.X.T, djdz)
         # self.djdb = djdz
-        djdx = np.matmul(djdz, self.w.T)
+        # djdx = np.matmul(djdz, self.w.T)
+        djdx = np.matmul(djdz, self.w[1:, :].T)
         return (djdx)
         
     

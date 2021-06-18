@@ -9,8 +9,10 @@ class Model:
         for l in self.layers:
             if l.input_size == None:
                 l.input_size = last_layer.units
-                l.w = xavier_init(l.input_size, l.units)
+                l.w = xavier_init(l.input_size + 1, l.units)
                 last_layer = l
+            print("\n****")
+            print(l)
             
     def feed_forward(self, X):
         for l in self.layers:
@@ -29,9 +31,15 @@ class Model:
     
     def improve(self):
         for layer in self.layers:
-            self.optimizer(layer) 
+            self.optimizer(layer)
     
+    def overfitting(self, history):
+        if len(history < 4):
+            return (False)
+       
+
     def fit(self, X, y, score):
+        past = []
         for e in range(conf.epochs):
             a = self.feed_forward(X)
             loss = self.loss_function(a, y)
@@ -42,6 +50,8 @@ class Model:
             val_loss = self.loss_function(val_a, score.y) ### TODO: change into test set
             score.evaluation(val_a)
             score.keep_track(loss, val_loss)
+            if self.overfitting(score.history):
+                break
             print(f"\nepoch {e + 1}/{conf.epochs} - loss: {round(loss, 4)} - val_loss: {round(val_loss, 4)}")
             print(score)
         return (a)

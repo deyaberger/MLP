@@ -42,4 +42,10 @@ def load_weights_from_csv(csv_prefix, model): ### to be changed for path
 def load_eval_from_csv(file, col):
     eval = np.genfromtxt(file, delimiter = ",")
     return (eval[:, col])
+
+
+def add_bias_units(X):
+    bias_units = np.ones((X.shape[0], 1))
+    X = np.concatenate((bias_units, X), axis = 1)
+    return (X)
         

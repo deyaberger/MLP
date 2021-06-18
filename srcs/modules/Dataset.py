@@ -34,11 +34,10 @@ class Dataset:
 		self.X = self.scaler.transform(self.X)
 
 
-	def add_bias_units(self):
-		bias_units = np.ones((self.X.shape[0], 1))
-		self.X = np.concatenate((bias_units, self.X), axis = 1)
-
-  
 	def split_data(self):
 		self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y, train_size=conf.train_size, random_state=42)
+
+	
+	def __str__(self):
+		return (f"{self.X_train.shape = }, {self.X_test.shape = }, {self.y_train.shape = }, {self.y_test.shape = }")
 	
