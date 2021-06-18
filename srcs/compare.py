@@ -10,7 +10,6 @@ if __name__ == "__main__":
     any = 0
     for name in glob.glob(f"{conf.model_folder}*"):
         if name.startswith(f"{conf.model_folder}{conf.eval_prefix}"):
-            print(name)
             any = 1
             y = load_eval_from_csv(name, conf.eval[metric])
             x = list(range(len(y)))

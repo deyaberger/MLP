@@ -1,6 +1,7 @@
 from utils import xavier_init, optimizer_function, get_loss, conf, save_json
 import numpy as np
 import time
+import pickle
 
 
 class Model:
@@ -51,7 +52,7 @@ class Model:
             val_loss = self.loss_function(val_a, score.y) ### TODO: change into test set
             score.evaluation(val_a)
             score.keep_track(loss, val_loss)
-            if self.overfitting(score.history):
+            if conf.early_stop == True and self.overfitting(score.history) == True:
                 print(f"Stoping training loop at epoch {e} to avoid Overfitting (Validation loss has started to increase)")
                 break
             print(f"\nepoch {e + 1}/{conf.epochs} - loss: {round(loss, 4)} - val_loss: {round(val_loss, 4)}")
@@ -71,7 +72,6 @@ class Model:
         weights = []
         for i, l in enumerate(self.layers):
             weights.append(l.w)
-        weights = np.array(weights, dtype=object)
-        np.savetxt(f"{name}.csv", weights, delimiter=",", fmt="%s")
-    
+        with open(f"{name}.pkl", "wb") as f:
+            pickle.dump(weights, f)    
         

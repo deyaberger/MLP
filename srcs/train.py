@@ -11,8 +11,8 @@ if __name__ == "__main__":
     print(data)
     model = Model([
         Layer(units = 6, activation = "sigmoid", input_size = data.X.shape[1]),
-        # Layer(units = 3, activation = "sigmoid"),
-        # Layer(units = 5, activation = "sigmoid"),
+        Layer(units = 3, activation = "sigmoid"),
+        Layer(units = 5, activation = "sigmoid"),
         Layer(units = data.y.shape[1], activation = "softmax"),
         
     ])

@@ -2,6 +2,7 @@ import numpy as np
 from numpy.random import rand
 from math import sqrt
 import json
+import pickle
 
 
 def xavier_init(input_size, units):
@@ -34,10 +35,11 @@ def from_json_to_layers(infos, Layer):
     return (layers_list)
 
 
-def load_weights_from_csv(csv_prefix, model): ### to be changed for path
-    for i, layer in enumerate(model.layers):
-        weights = np.genfromtxt(f"{csv_prefix}_{i}.csv", delimiter = ",")
-        layer.w = weights
+def load_weights_from_pickle(path, model):
+    with open(path, "rb") as f:
+        weights = pickle.load(f)
+    for i, w in enumerate(weights):
+        model.layers[i].w = w
 
 def load_eval_from_csv(file, col):
     eval = np.genfromtxt(file, delimiter = ",")
