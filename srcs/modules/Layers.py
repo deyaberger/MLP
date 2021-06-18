@@ -7,17 +7,17 @@ class Layer:
         self.units = units
         self.w = None
         self.vw = 0
-        # self.b = xavier_init(1, units)
-        # self.vb = np.zeros((1, units))
+        self.b = xavier_init(1, units)
+        self.vb = np.zeros((1, units))
         if self.input_size != None:
-            self.w = xavier_init(input_size + 1, units)
-            self.vw = np.zeros((input_size + 1, units))
+            self.w = xavier_init(input_size, units)
+            self.vw = np.zeros((input_size, units))
         self.activation, self.activation_derivative = get_activation(activation)
 
     
     def forward(self, X):
-        self.X = add_bias_units(X)
-        self.z = np.matmul(self.X, self.w)# + self.b
+        self.X = X
+        self.z = np.matmul(self.X, self.w) + self.b
         self.a = self.activation(self.z)
         return (self.a)
     
@@ -26,9 +26,8 @@ class Layer:
         dadz = self.activation_derivative(self.a, self.z)
         djdz = np.einsum('ik,ikj->ij', djda, dadz)
         self.djdw = np.matmul(self.X.T, djdz)
-        # self.djdb = djdz
-        # djdx = np.matmul(djdz, self.w.T)
-        djdx = np.matmul(djdz, self.w[1:, :].T)
+        self.djdb = np.mean(djdz, axis = 0)
+        djdx = np.matmul(djdz, self.w.T)
         return (djdx)
         
     

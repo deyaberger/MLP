@@ -10,10 +10,8 @@ class Model:
         for l in self.layers:
             if l.input_size == None:
                 l.input_size = last_layer.units
-                l.w = xavier_init(l.input_size + 1, l.units)
+                l.w = xavier_init(l.input_size, l.units)
                 last_layer = l
-            print("\n****")
-            print(l)
             
     def feed_forward(self, X):
         for l in self.layers:
