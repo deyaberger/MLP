@@ -2,6 +2,7 @@ from utils import xavier_init, optimizer_function, get_loss, conf, save_json
 import numpy as np
 import time
 import pickle
+from termcolor import cprint
 
 
 class Model:
@@ -53,10 +54,9 @@ class Model:
             score.evaluation(val_a)
             score.keep_track(loss, val_loss)
             if conf.early_stop == True and self.overfitting(score.history) == True:
-                print(f"Stoping training loop at epoch {e} to avoid Overfitting (Validation loss has started to increase)")
+                cprint(f"\nStoping training loop at epoch {e} to avoid Overfitting (Validation loss has started to increase)", "yellow")
                 break
-            print(f"\nepoch {e + 1}/{conf.epochs} - loss: {round(loss, 4)} - val_loss: {round(val_loss, 4)}")
-            print(score)
+            print(f"\nepoch {e + 1}/{conf.epochs}:\n{score}")
         return (a)
 
 
