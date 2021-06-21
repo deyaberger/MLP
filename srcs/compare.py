@@ -2,8 +2,7 @@ from utils import conf, load_eval_from_csv
 import matplotlib.pyplot as plt
 import glob
 
-metric = "loss"
-
+metric = "mean_f1"
 
 if __name__ == "__main__":
     list_models = {}

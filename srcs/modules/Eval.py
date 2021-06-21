@@ -78,15 +78,15 @@ class ModelEvaluation:
             end_loss = f"loss: {round(self.history[-1][0], 4)} " + colored(f"({diff_loss}%)", "green") + f" - val_loss: {round(self.history[-1][1], 4)} " + colored(f"({diff_val_loss}%)", "green")
         start_mean = f"mean_sensitivity = {round(self.history[0][2], 4)}, mean_specificity = {round(self.history[0][3], 4)}, mean_precision = {round(self.history[0][4], 4)}, mean_f1 = {round(self.history[0][5], 4)}"
         end_mean = f"mean_sensitivity = {round(self.history[-1][2], 4)}, mean_specificity = {round(self.history[-1][3], 4)}, mean_precision = {round(self.history[-1][4], 4)}, mean_f1 = {round(self.history[-1][5], 4)}"
-        cprint("\n\t\t\tSUMMARY:\n", "blue")
-        cprint("**\tBefore Training:\t**\n", "blue")
+        cprint("\n\t\t\tSUMMARY:\n", "cyan")
+        cprint("**\tBefore Training:\t**\n", "cyan")
         print(f"{start_loss}\n{start_mean}\n\n")
-        cprint("\n**\tAfter Training:\t**\n", "blue")
+        cprint("\n**\tAfter Training:\t**\n", "cyan")
         print(f"{end_loss}\n{end_mean}\n")
 
     
     def __str__(self):
-        losses = f"loss : {round(self.history[0][0], 4)}, validation_loss : {round(self.history[0][1], 4)}"
+        losses = f"loss : {round(self.history[-1][0], 4)}, validation_loss : {round(self.history[-1][1], 4)}"
         mean = f"mean_sensitivity = {round(self.mean_sensitivity, 4)}, mean_specificity = {round(self.mean_specificity, 4)}, mean_precision = {round(self.mean_precision, 4)}, mean_f1 = {round(self.mean_f1, 4)}"
         return(f"{losses} {mean}")
     

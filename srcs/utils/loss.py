@@ -15,8 +15,21 @@ def crossentropy_derivative(a, y):
 	return (d_cross)
 
 
+def mse(a, y):
+	loss = np.sum(np.square(a - y), axis = 1, keepdims=True)
+	loss = np.mean(loss) / 2
+	return (loss)
+
+    
+def mse_derivative(a, y):
+	d_mse = (a - y)
+	return (d_mse)
+
+
 def get_loss(loss_name):
 	loss_function = None
 	if loss_name == "crossentropy":
 		loss_function, loss_function_derivative = crossentropy, crossentropy_derivative
+	elif loss_name == "mse":
+		loss_function, loss_function_derivative = mse, mse_derivative
 	return loss_function, loss_function_derivative

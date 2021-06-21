@@ -42,7 +42,6 @@ class Model:
         return (False)
 
     def fit(self, X, y, score):
-        past = []
         for e in range(conf.epochs):
             a = self.feed_forward(X)
             loss = self.loss_function(a, y)
@@ -50,14 +49,13 @@ class Model:
             self.backpropagation(djda)
             self.improve()
             val_a = self.feed_forward(score.X)
-            val_loss = self.loss_function(val_a, score.y) ### TODO: change into test set
+            val_loss = self.loss_function(val_a, score.y)
             score.evaluation(val_a)
             score.keep_track(loss, val_loss)
-            if conf.early_stop == True and self.overfitting(score.history) == True:
+            if self.args.early_stop == True and self.overfitting(score.history) == True:
                 cprint(f"\nStoping training loop at epoch {e} to avoid Overfitting (Validation loss has started to increase)", "yellow")
                 break
             print(f"\nepoch {e + 1}/{conf.epochs}:\n{score}")
-        return (a)
 
 
     def save_architecture(self, name):

@@ -23,7 +23,7 @@ class Layer:
     
     
     def backwards(self, djda):
-        dadz = self.activation_derivative(self.a, self.z)
+        dadz = self.activation_derivative(self.a)
         djdz = np.einsum('ik,ikj->ij', djda, dadz)
         self.djdw = np.matmul(self.X.T, djdz)
         self.djdb = np.mean(djdz, axis = 0)

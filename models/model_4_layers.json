@@ -1,1 +1,0 @@
-{"optimizer": "gradient_descent", "loss": "crossentropy", "layers": [{"activation": "sigmoid", "input_size": 30, "output_size": 6}, {"activation": "sigmoid", "input_size": 6, "output_size": 3}, {"activation": "sigmoid", "input_size": 3, "output_size": 5}, {"activation": "softmax", "input_size": 5, "output_size": 2}]}
