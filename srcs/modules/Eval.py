@@ -1,8 +1,12 @@
 import numpy as np
-np.seterr(divide='ignore', invalid='ignore')
+np.seterr(divide='ignore', invalid='ignore') # You can remove it if you want to see numpy warnings about division by zero and nan numbers
 from termcolor import cprint, colored
 
+
 class ModelEvaluation:
+    '''
+    A class to validate a model based on unused testing data
+    '''    
     def __init__(self, X, y):
         self.history = []
         self.X = X
@@ -15,6 +19,13 @@ class ModelEvaluation:
     
         
     def evaluate_classifier(self, yhat):
+        '''
+        yhatmax = a vector like [0.75, 0,32] will be transofrmed to [1, 0]
+        tp : true positive
+        tn : true negative
+        fn : false negative
+        fp : false positive
+        '''
         yhatmax = (yhat == yhat.max(axis=1, keepdims = True)).astype(int)
         eval = []
         for col in range(self.y.shape[1]):
@@ -31,6 +42,13 @@ class ModelEvaluation:
     
     
     def calculate_metrics(self, tp, fp, tn, fn):
+        '''
+        If the question was: is this tumor malignant?:
+        sensitivity: how we estimated it to be malignant compared to all the malignant tumors
+        specificity : how we estimated it to be benign compared to all the benign tumors
+        precision : how much malignant tumors we predicted were actually malignant
+        f1 : a mix of all ;)
+        '''
         sensitivity = tp / (tp + fn)
         specificity = tn / (tn + fp)
         precision = tp / (tp + fp)
@@ -43,6 +61,9 @@ class ModelEvaluation:
 
     
     def get_mean_metrics(self):
+        '''
+        Since we are working on vectors, to easier read the metrics, I choose to look for the mean value of all the vector
+        '''
         self.mean_sensitivity = np.mean(self.global_sensitivity)
         self.mean_specificity = np.mean(self.global_specificity)
         self.mean_precision = np.mean(self.global_precision)

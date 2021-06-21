@@ -1,7 +1,12 @@
 import numpy as np
 from utils import xavier_init, get_activation, add_bias_units
 
+
 class Layer:
+    '''
+    Class creating Layers of different input and output sizes for our model,
+    with their weights, bias and activation function.
+    '''
     def __init__(self, units, activation = None, input_size = None):
         self.input_size = input_size
         self.units = units
@@ -16,6 +21,10 @@ class Layer:
 
     
     def forward(self, X):
+        '''
+        Calculating the weighted sum : (our inputs X) * (our weights) + (our biases)
+        "a" is the output of each layer
+        '''
         self.X = X
         self.z = np.matmul(self.X, self.w) + self.b
         self.a = self.activation(self.z)
@@ -23,6 +32,11 @@ class Layer:
     
     
     def backwards(self, djda):
+        '''
+        Calculating the derivative of :
+        (dj / da) = loss_derivative
+        (dx/dw) * (dz/db) * (dz/dw) * (da/dz) * (dj/da)
+        '''
         dadz = self.activation_derivative(self.a)
         djdz = np.einsum('ik,ikj->ij', djda, dadz)
         self.djdw = np.matmul(self.X.T, djdz)

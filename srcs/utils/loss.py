@@ -31,6 +31,9 @@ def crossentropy_derivative(a, y):
 
 
 def mse(a, y):
+    '''
+    Mean squared error
+    '''
     loss = np.sum(np.square(a - y), axis = 1, keepdims=True)
     loss = np.mean(loss) / 2
     return (loss)

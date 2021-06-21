@@ -16,6 +16,10 @@ def parse_arguments():
     return (args)
 
 def init_model(args):
+    '''
+    The more layers you put, the longer it will take to compute, so consider changing the number of epochs
+    choices of activation functions : ["sigmoid", "softmax", "identity"] 
+    '''
     model = Model([
         Layer(units = 6, activation = "sigmoid", input_size = data.X.shape[1]),
         Layer(units = 3, activation = "sigmoid"),

@@ -23,20 +23,20 @@ def softmax_derivative(a):
     m, n = a.shape # m = nb examples, n = nb features
 
     # First we create for each example feature vector, it's outer product with itself:
-    # ( p1^2  p1*p2  p1*p3 .... )
-    # ( p2*p1 p2^2   p2*p3 .... )
+    # ( a1^2  a1*p2  a1*p3 .... )
+    # ( a2*p1 a2^2   a2*p3 .... )
     # ( ...                     )
     tensor1 = np.einsum('ij,ik->ijk', a, a)  # (m, n, n)
 
     # Second we need to create an (n,n) identity of the feature vector
-    # ( p1  0  0  ...  )
-    # ( 0   p2 0  ...  )
+    # ( a1  0  0  ...  )
+    # ( 0   a2 0  ...  )
     # ( ...            )
     tensor2 = np.einsum('ij,jk->ijk', a, np.eye(n, n))  # (m, n, n)
 
     # Then we need to subtract the first tensor from the second
-    # ( p1 - p1^2   -p1*p2   -p1*p3  ... )
-    # ( -p1*p2     p2 - p2^2   -p2*p3 ...)
+    # ( a1 - a1^2   -a1*a2   -a1*a3  ... )
+    # ( -a1*a2     a2 - a2^2   -a2*a3 ...)
     # ( ...                              )
     da = tensor2 - tensor1
     return da

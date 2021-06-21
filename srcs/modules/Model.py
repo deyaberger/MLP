@@ -1,9 +1,12 @@
-from utils import xavier_init, optimizer_function, get_loss, conf, save_json
+from utils import conf, xavier_init, optimizer_function, get_loss, conf, save_json
 import pickle
 from termcolor import cprint
 
 
 class Model:
+    '''
+    Creation of a model with its layers and its loss and optimizer functions
+    '''
     def __init__(self, layers_list):
         self.layers = layers_list
         last_layer = self.layers[0]
@@ -14,6 +17,10 @@ class Model:
                 last_layer = l
             
     def feed_forward(self, X):
+        '''
+        Feed forward : passing the information forward in the neural network:
+        through the input nodes then through the hidden layers and finally through the output nodes
+        '''
         for l in self.layers:
             X = l.forward(X)
         return (X)
@@ -25,17 +32,27 @@ class Model:
         
         
     def backpropagation(self, djda):
+        '''
+        Calculating the derivative of the loss according to the weights of each layers
+        '''
         for layer in reversed(self.layers):
             djda = layer.backwards(djda)
     
+    
     def improve(self):
+        '''
+        Computing gradient descent or other form of optimizer 
+        '''
         for layer in self.layers:
             self.optimizer(layer)
     
     def overfitting(self, history):
+        '''
+        If loss keeps decreasing but validation loss starts increasing it means we might overfit our model
+        '''
         if len(history) < 2:
             return (False)
-        if history[-1][1] > history[-2][1]:
+        if history[-1][conf.eval["val_loss"]] > history[-2][conf.eval["val_loss"]]:
             return (True)
         return (False)
 
@@ -57,6 +74,9 @@ class Model:
 
 
     def save_architecture(self, name):
+        '''
+        Saving our achitecture in a json file (easy to read)
+        '''
         infos = {"optimizer" : self.optimizer.__name__, "loss" : self.loss_function.__name__, "layers" : []}
         for l in self.layers:
             layer = {"activation" : l.activation.__name__, "input_size" : l.input_size, "output_size": l.units}
@@ -65,6 +85,9 @@ class Model:
     
     
     def save_weights(self, name):
+        '''
+        Saving our weights in a pickle file (easy to load)
+        '''
         weights = []
         for i, l in enumerate(self.layers):
             weights.append(l.w)

@@ -12,6 +12,10 @@ def print_and_exit(msg):
 
 
 def xavier_init(input_size, units):
+    '''
+    Initializing the weights and bias in a "not so random way":
+    we want the variance to remain the same as we pass through each layer (to avoid values to explode or vanish to zero)
+    '''
     lower, upper = -(1.0 / sqrt(input_size)), (1.0 / sqrt(input_size))
     np.random.seed(70) ### Remove it if you want more random results
     weights = rand(input_size, units)
@@ -34,6 +38,9 @@ def load_json(name):
 
 
 def from_json_to_layers(infos, Layer):
+    '''
+    Reading our json dictionnary to recreate the layers list for our model
+    '''
     layers_list = []
     try:
         for i, l in enumerate(infos["layers"]):
@@ -63,6 +70,9 @@ def load_eval_from_csv(file, col):
 
 
 def add_bias_units(X):
+    '''
+    Unused function: could be an alternative to simplify how we write our calculus
+    '''
     bias_units = np.ones((X.shape[0], 1))
     X = np.concatenate((bias_units, X), axis = 1)
     return (X)

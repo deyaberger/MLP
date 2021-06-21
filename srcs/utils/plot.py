@@ -3,6 +3,9 @@ from utils.config import conf
 
     
 def plot_metrics(metrics, history):
+    '''
+    Ploting different metrics on the same figure
+    '''
     for metric in metrics:
         x = list(range(history.shape[0]))
         y = history[:, conf.eval[metric]]
