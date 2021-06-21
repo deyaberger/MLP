@@ -7,9 +7,9 @@ To create a virtual environment, run:</br>
 ```python3 -m venv [your_env_name]```</br>
 Then: ```source [your_env_name]/bin/activate```</br>
 Finally:
+```cd src```</br>
 ```pip install --upgrade pip```</br>
 ```pip install -r requirements.txt```</br>
-```cd src```</br>
 
 ## I. Training
 Run ```python3 train.py``` to train the model on the dataset that is given by the subject and stored in ```../datasets/data.csv```. </br>Use ```-h``` to display the usage and the options
