@@ -7,7 +7,7 @@ from termcolor import cprint, colored
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-l', '--loss', help='Choose your loss function', type=str, default="crossentropy", choices = ["crossentropy", "mse"])
+    parser.add_argument('-l', '--loss', help='Choose your loss function', type=str, default="binary_crossentropy", choices = ["binary_crossentropy", "crossentropy", "mse"])
     parser.add_argument('-o', '--optimizer', help='Choose your optimizer', type=str, default="gradient_descent", choices = ["gradient_descent", "momentum"])
     parser.add_argument('-v', '--verbose', help='increase output verbosity', type=int, default=0, choices = [0, 1])
     parser.add_argument('-ea', '--early_stop', help='Helps avoiding overfitting', action = 'store_true')

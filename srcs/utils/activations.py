@@ -58,6 +58,6 @@ def get_activation(activation):
             a, d_a = sigmoid, sigmoid_derivative
         elif activation == "softmax":
             a, d_a = softmax, softmax_derivative
-        elif activation == "" or activation == "identity":
+        elif activation == None or activation == "identity":
             a, d_a = identity, identity_derivative
         return (a, d_a)

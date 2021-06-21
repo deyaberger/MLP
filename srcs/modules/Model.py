@@ -1,6 +1,4 @@
 from utils import xavier_init, optimizer_function, get_loss, conf, save_json
-import numpy as np
-import time
 import pickle
 from termcolor import cprint
 

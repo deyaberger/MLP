@@ -2,7 +2,7 @@ import numpy as np
 from utils import xavier_init, get_activation, add_bias_units
 
 class Layer:
-    def __init__(self, units, activation, input_size = None):
+    def __init__(self, units, activation = None, input_size = None):
         self.input_size = input_size
         self.units = units
         self.w = None

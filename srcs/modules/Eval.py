@@ -1,5 +1,5 @@
 import numpy as np
-np.seterr(divide='ignore', invalid='ignore') #TODO : maybe change it at the end
+np.seterr(divide='ignore', invalid='ignore')
 from termcolor import cprint, colored
 
 class ModelEvaluation:
