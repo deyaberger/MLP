@@ -1,6 +1,11 @@
-from utils import conf, load_eval_from_csv
-import matplotlib.pyplot as plt
-import glob
+try:
+    from utils import conf, load_eval_from_csv
+    import matplotlib.pyplot as plt
+    import glob
+except ModuleNotFoundError as e:
+    import sys
+    print(f"{e}\nPlease run 'pip install -r requirements.txt'")
+    sys.exit()
 
 metric = "loss" ### Change this if you want to plot another metric
 ### choices = ["loss", "val_loss", "mean_sensitivity", "mean_specificity", "mean_precision", "mean_f1"]

@@ -1,4 +1,10 @@
-import numpy as np
+try:
+    import numpy as np
+except ModuleNotFoundError as e:
+    import sys
+    print(f"{e}\nPlease run 'pip install -r requirements.txt'")
+    sys.exit()
+
 
 def sigmoid(z):
     a = 1 / (1 + np.exp(-z))

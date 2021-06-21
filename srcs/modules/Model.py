@@ -1,6 +1,11 @@
-from utils import conf, xavier_init, optimizer_function, get_loss, conf, save_json
-import pickle
-from termcolor import cprint
+try:
+    from utils import conf, xavier_init, optimizer_function, get_loss, conf, save_json
+    import pickle
+    from termcolor import cprint
+except ModuleNotFoundError as e:
+    import sys
+    print(f"{e}\nPlease run 'pip install -r requirements.txt'")
+    sys.exit()
 
 
 class Model:

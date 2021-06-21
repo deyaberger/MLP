@@ -1,7 +1,12 @@
-from utils import conf, load_json, from_json_to_layers, load_weights_from_pickle
-from modules import Model, Layer, Dataset, ModelEvaluation
-import argparse
-from termcolor import cprint, colored
+try:
+    from utils import conf, load_json, from_json_to_layers, load_weights_from_pickle
+    from modules import Model, Layer, Dataset, ModelEvaluation
+    import argparse
+    from termcolor import cprint, colored
+except ModuleNotFoundError as e:
+    import sys
+    print(f"{e}\nPlease run 'pip install -r requirements.txt'")
+    sys.exit()
 
 
 def parse_arguments():

@@ -1,5 +1,10 @@
-import numpy as np
-from utils import xavier_init, get_activation, add_bias_units
+try:
+    import numpy as np
+    from utils import xavier_init, get_activation
+except ModuleNotFoundError as e:
+    import sys
+    print(f"{e}\nPlease run 'pip install -r requirements.txt'")
+    sys.exit()
 
 
 class Layer:

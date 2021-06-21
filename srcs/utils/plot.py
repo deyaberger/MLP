@@ -1,5 +1,10 @@
-import matplotlib.pyplot as plt
 from utils.config import conf
+try:
+    import matplotlib.pyplot as plt
+except ModuleNotFoundError as e:
+    import sys
+    print(f"{e}\nPlease run 'pip install -r requirements.txt'")
+    sys.exit()
 
     
 def plot_metrics(metrics, history):

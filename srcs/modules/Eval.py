@@ -1,6 +1,11 @@
-import numpy as np
-np.seterr(divide='ignore', invalid='ignore') # You can remove it if you want to see numpy warnings about division by zero and nan numbers
-from termcolor import cprint, colored
+try:
+    import numpy as np
+    np.seterr(divide='ignore', invalid='ignore') # You can remove it if you want to see numpy warnings about division by zero and nan numbers
+    from termcolor import cprint, colored
+except ModuleNotFoundError as e:
+    import sys
+    print(f"{e}\nPlease run 'pip install -r requirements.txt'")
+    sys.exit()
 
 
 class ModelEvaluation:

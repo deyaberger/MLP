@@ -1,8 +1,13 @@
-from utils import conf, plot_metrics
-from modules import Model, Layer, ModelEvaluation, Dataset
-import numpy as np
-import argparse
-from termcolor import cprint, colored
+try:
+    from utils import conf, plot_metrics
+    from modules import Model, Layer, ModelEvaluation, Dataset
+    import numpy as np
+    import argparse
+    from termcolor import cprint, colored
+except ModuleNotFoundError as e:
+    import sys
+    print(f"{e}\nPlease run 'pip install -r requirements.txt'")
+    sys.exit()
 
 
 def parse_arguments():

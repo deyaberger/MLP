@@ -1,5 +1,10 @@
-import numpy as np
-from utils.config import conf
+try:
+    import numpy as np
+    from utils.config import conf
+except ModuleNotFoundError as e:
+    import sys
+    print(f"{e}\nPlease run 'pip install -r requirements.txt'")
+    sys.exit()
 
 
 def crossentropy(a, y):

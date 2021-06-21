@@ -1,10 +1,14 @@
-import numpy as np
-from numpy.random import rand
-from math import sqrt
-import json
-import pickle
-import sys
-
+try:
+    import numpy as np
+    from numpy.random import rand
+    from math import sqrt
+    import json
+    import pickle
+    import sys
+except ModuleNotFoundError as e:
+    import sys
+    print(f"{e}\nPlease run 'pip install -r requirements.txt'")
+    sys.exit()
 
 def print_and_exit(msg):
     print(msg)
