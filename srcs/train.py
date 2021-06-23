@@ -28,6 +28,8 @@ def init_model(args):
     The more layers you put, the longer it will take to compute, so consider changing the number of epochs
     choices of activation functions : ["sigmoid", "softmax", "identity"] 
     '''
+    if args.epochs < 1 or args.epochs > 30000:
+        print_and_exit("Please enter a number of epochs superior to 1 and inferior to 30 000 (to avoid very long loops and overfitting)")
     model = Model([
         Layer(units = 6, activation = "sigmoid", input_size = data.X.shape[1]),
         Layer(units = 3, activation = "sigmoid"),
@@ -36,8 +38,6 @@ def init_model(args):
     ])
     model.compile(loss = args.loss, optimizer = args.optimizer)
     model.args = args
-    if args.epochs < 1 or args.epochs > 30000:
-        print_and_exit("Please enter a number of epochs superior to 1 and inferior to 30 000 (to avoid very long loops and overfitting)")
     if args.verbose == 1:
         print(colored(f"\n** Model has been compiled with the following architecture: **", 'magenta') + f"\nNumber of Layers : {len(model.layers)}\nLoss : {args.loss}\nOptimizer : {args.optimizer}")
     return (model)
