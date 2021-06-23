@@ -48,6 +48,7 @@ class Layer:
         self.djdb = np.mean(djdz, axis = 0)
         djdx = np.matmul(djdz, self.w.T)
         return (djdx)
+    
         
     
     def __str__(self):

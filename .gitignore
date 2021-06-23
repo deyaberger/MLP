@@ -5,11 +5,6 @@ srcs/*.pkl
 srcs/*.csv
 srcs/modules/__pycache__
 srcs/utils/__pycache__
-datasets/__pycache__
 *.pkl
 *.ipynb
-*.csv
 *.json
-models/*.csv
-models/*.json
-models/*.pkl
