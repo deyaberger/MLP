@@ -6,7 +6,7 @@ If you do not have python3, run:</br>
 To create a virtual environment, run:</br>
 ```python3 -m venv [your_env_name]```</br>
 Then: ```source [your_env_name]/bin/activate```</br>
-Finally:
+Finally:</br>
 ```cd src```</br>
 ```pip install --upgrade pip```</br>
 ```pip install -r requirements.txt```</br>

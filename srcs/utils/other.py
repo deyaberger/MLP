@@ -26,6 +26,15 @@ def xavier_init(input_size, units):
     weights = weights * (upper - lower) + lower
     return (weights)
 
+def mini_batch(X, y, batch_size):
+    datasize = X.shape[0]
+    if batch_size > datasize:
+        batch_size = datasize
+    mask = np.random.choice(datasize, batch_size, replace = False)
+    X = X[mask]
+    y = y[mask]
+    return (X, y)
+
 
 def save_json(name, object):
     with open(name, "w") as f:

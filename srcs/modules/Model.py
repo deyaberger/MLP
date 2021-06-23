@@ -1,5 +1,5 @@
 try:
-    from utils import conf, xavier_init, optimizer_function, get_loss, conf, save_json
+    from utils import conf, xavier_init, optimizer_function, get_loss, conf, save_json, mini_batch
     import pickle
     from termcolor import cprint
 except ModuleNotFoundError as e:
@@ -62,7 +62,9 @@ class Model:
         return (False)
 
     def fit(self, X, y, score):
-        for e in range(conf.epochs):
+        for e in range(self.args.epochs):
+            if self.args.batch == True:
+                X, y = mini_batch(X, y, conf.batch_size)
             a = self.feed_forward(X)
             loss = self.loss_function(a, y)
             djda = self.loss_function_derivative(a, y)
@@ -75,10 +77,10 @@ class Model:
             if self.args.early_stop == True and self.overfitting(score.history) == True:
                 cprint(f"\nStoping training loop at epoch {e} to avoid Overfitting (Validation loss has started to increase)", "yellow")
                 break
-            print(f"\nepoch {e + 1}/{conf.epochs}:\n{score}")
+            print(f"\nepoch {e + 1}/{self.args.epochs}:\n{score}")
 
 
-    def save_architecture(self, name):
+    def save_topology(self, name):
         '''
         Saving our achitecture in a json file (easy to read)
         '''
